@@ -6,183 +6,258 @@
   <title>Luka</title>
   <style>
     :root {
-      --text: #f5f5f5;
-      --muted: #a3a3a3;
-      --line: #3a3a3a;
-      --bg: #000000;
+      --bg: #050505;
+      --panel: #0d0d0d;
+      --panel-2: #111111;
+      --line: #222222;
+      --text: #f2f2f2;
+      --muted: #a1a1a1;
+      --radius: 18px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      min-height: 100vh;
       background: var(--bg);
       color: var(--text);
-      font-family: "Pretendard", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.7;
-      padding: 72px 20px;
-    }
-
-    main {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      margin: 0 0 12px;
-      letter-spacing: -0.03em;
-    }
-
-    .tagline {
-      margin: 0 0 44px;
-      color: var(--muted);
-      font-size: 1.06rem;
-    }
-
-    nav {
-      margin-bottom: 44px;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      font-size: 0.96rem;
-    }
-
-    .cards {
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
       display: grid;
-      gap: 16px;
+      place-items: center;
+      padding: 18px;
     }
 
-    .card {
-      border: 1px solid var(--line);
-      background: #0a0a0a;
-      border-radius: 14px;
-      padding: 20px;
-    }
-
-    h2 {
-      font-size: 1rem;
-      margin: 0 0 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-    }
-
-    p {
-      margin: 0;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .layout {
+      width: min(980px, 100%);
       display: grid;
-      gap: 8px;
-    }
-
-    a {
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid var(--line);
-      transition: border-color 0.2s ease;
-    }
-
-    a:hover {
-      border-color: var(--text);
-    }
-
-    .icon-links {
-      margin-top: 18px;
-      display: flex;
+      grid-template-columns: 1.05fr 1.1fr;
       gap: 10px;
     }
 
-    .icon-link {
-      width: 40px;
-      height: 40px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .panel {
+      background: linear-gradient(180deg, #101010 0%, #0a0a0a 100%);
       border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #111;
-      text-decoration: none;
-      border-bottom: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
     }
 
-    .icon-link svg {
-      width: 18px;
-      height: 18px;
+    .hero {
+      min-height: 500px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.7vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 34ch;
+      font-size: 0.98rem;
+    }
+
+    .hero-badge {
+      position: absolute;
+      left: 24px;
+      bottom: 22px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid #363636;
+      display: grid;
+      place-items: center;
+      color: #d5d5d5;
+      font-size: 1rem;
+      background: rgba(14, 14, 14, 0.9);
+    }
+
+    .right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mini {
+      min-height: 255px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .mini .title {
+      color: #d0d0d0;
+      font-size: 0.82rem;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .mini ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 9px;
+    }
+
+    .mini a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #242424;
+      padding-bottom: 6px;
+    }
+
+    .mini a:hover { color: #cfcfcf; }
+
+    .photo {
+      min-height: 220px;
+      position: relative;
+      padding: 0;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo::after {
+      content: "PROFILE";
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .social-wrap {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+      min-height: 220px;
+    }
+
+    .social {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .social a {
+      height: 66px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: #efefef;
+      text-decoration: none;
+      display: grid;
+      place-items: center;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .social a:hover {
+      border-color: #3a3a3a;
+      color: #ffffff;
+    }
+
+    .social svg {
+      width: 22px;
+      height: 22px;
       fill: currentColor;
     }
 
-    @media (max-width: 640px) {
-      body {
-        padding: 48px 16px;
-      }
+    .mascot {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(170deg, #111111, #080808);
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      color: #c9c9c9;
+    }
 
-      .card {
-        padding: 16px;
-      }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .hero { min-height: 320px; }
+      .mini { min-height: 190px; }
+    }
+
+    @media (max-width: 540px) {
+      .right { grid-template-columns: 1fr; }
+      .social-wrap { min-height: 180px; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Luka</h1>
-    <p class="tagline">Building real systems before adulthood.</p>
+  <main class="layout">
+    <section class="panel hero">
+      <h1>Luka</h1>
+      <p>고3 개발자로서 보안과 AI를 중심으로 실제로 돌아가는 시스템을 만드는 데 집중하고 있습니다. 현재는 실전 프로젝트를 직접 설계하고 구현하고 있습니다.</p>
+      <span class="hero-badge" aria-hidden="true">◌</span>
+    </section>
 
-    <nav>
-      <a href="#about">소개</a>
-      <a href="#projects">Projects</a>
-      <a href="#tools">Tools</a>
-    </nav>
-
-    <div class="cards">
-      <section id="about" class="card">
-        <h2>About</h2>
-        <p>고3 개발자로서 보안과 AI를 중심으로 실제로 돌아가는 시스템을 만드는 데 집중하고 있습니다. 현재는 실전 프로젝트를 직접 설계하고 구현하고 있습니다.</p>
-      </section>
-
-      <section id="projects" class="card">
-        <h2>Projects</h2>
+    <section class="right">
+      <article class="panel mini">
+        <p class="title">Projects</p>
         <ul>
-          <li><a href="https://luka0116kjh.github.io/portfolio-react/">Portfolio</a></li>
-          <li><a href="https://github.com/luka0116kjh/Snake-game">snake game</a></li>
-          <li><a href="https://github.com/luka0116kjh/ZeroScan">ZeroScan(Web Vulnerability Scanner)</a></li>
-          <li><a href="https://luka0116kjh.github.io/ghaslunch1/">School Dashboard</a></li>
+          <li><a href="https://luka0116kjh.github.io/portfolio-react/" target="_blank" rel="noreferrer">Portfolio</a></li>
+          <li><a href="https://github.com/luka0116kjh/Snake-game" target="_blank" rel="noreferrer">Snake Game</a></li>
+          <li><a href="https://github.com/luka0116kjh/ZeroScan" target="_blank" rel="noreferrer">ZeroScan</a></li>
+          <li><a href="https://luka0116kjh.github.io/ghaslunch1/" target="_blank" rel="noreferrer">School Dashboard</a></li>
         </ul>
-      </section>
+      </article>
 
-      <section id="tools" class="card">
-        <h2>Tools</h2>
+      <article class="panel mini">
+        <p class="title">Tools</p>
         <ul>
-          <li><a href="#">오늘 급식 보기</a></li>
-          <li><a href="#">시흥 날씨 확인</a></li>
-          <li><a href="#">포트 스캐너 데모</a></li>
-          <li><a href="#">내 IP 확인기</a></li>
+          <li><a href="https://luka0116kjh.github.io/ghaslunch1/" target="_blank" rel="noreferrer">오늘 급식 보기</a></li>
+          <li><a href="https://luka0116kjh.github.io/tobo/" target="_blank" rel="noreferrer">하루 할일</a></li>
+          <li><a href="#" target="_blank" rel="noreferrer"></a></li>
+          <li><a href="#" target="_blank" rel="noreferrer"></a></li>
         </ul>
-        <div class="icon-links" aria-label="contact links">
-          <a class="icon-link" href="mailto:kjh080116@naver.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.01L12 13l8-5.99V7H4zm16 10V9.24l-7.4 5.55a1 1 0 0 1-1.2 0L4 9.24V17h16z"/>
-            </svg>
-          </a>
-          <a class="icon-link" href="https://github.com/luka0116kjh" target="_blank" rel="noreferrer" aria-label="GitHub">
+      </article>
+
+      <article class="panel photo" aria-label="프로필 이미지 영역">
+        <img src="./image/luka.jpg" alt="Luka 프로필 사진" />
+      </article>
+
+      <article class="social-wrap">
+        <div class="social" aria-label="social links">
+          <a href="https://github.com/luka0116kjh" target="_blank" rel="noreferrer" aria-label="GitHub">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.25 1.84 1.25 1.08 1.84 2.83 1.31 3.52 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.21-.13-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.23a11.42 11.42 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.89.12 3.19.77.84 1.24 1.91 1.24 3.21 0 4.58-2.82 5.59-5.5 5.89.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 12 .5z"/>
             </svg>
           </a>
-          <a class="icon-link" href="https://typhoon-ursinia-b26.notion.site/luka-blog-2b1a01a0e28580939f1df409b010bf76" target="_blank" rel="noreferrer" aria-label="Notion Blog">
+          <a href="mailto:kjh080116@naver.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.01L12 13l8-5.99V7H4zm16 10V9.24l-7.4 5.55a1 1 0 0 1-1.2 0L4 9.24V17h16z"/>
+            </svg>
+          </a>
+          <a href="https://typhoon-ursinia-b26.notion.site/luka-blog-2b1a01a0e28580939f1df409b010bf76" target="_blank" rel="noreferrer" aria-label="Blog">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V5A1.5 1.5 0 0 1 5 3.5zm.5 2v13h2.2V10.2l5.1 8.3h2.7v-13h-2.2v8.1l-5-8.1H5.5z"/>
             </svg>
           </a>
         </div>
-      </section>
-    </div>
+        <div class="mascot" aria-hidden="true">LUKA</div>
+      </article>
+    </section>
   </main>
 </body>
 </html>
