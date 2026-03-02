@@ -83,6 +83,19 @@
       color: #d5d5d5;
       font-size: 1rem;
       background: rgba(14, 14, 14, 0.9);
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    }
+
+    .hero-badge:hover {
+      transform: scale(1.06);
+      border-color: #4a4a4a;
+      color: #ffffff;
+    }
+
+    .hero-badge:focus-visible {
+      outline: 2px solid #b3b3b3;
+      outline-offset: 2px;
     }
 
     .right {
@@ -197,6 +210,145 @@
       color: #c9c9c9;
     }
 
+    .skills-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 2, 2, 0.76);
+      display: none;
+      place-items: center;
+      padding: 18px;
+      z-index: 30;
+    }
+
+    .skills-overlay.open {
+      display: grid;
+    }
+
+    .skills-modal {
+      width: min(860px, 100%);
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #111111 0%, #090909 100%);
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .skills-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .skills-top h2 {
+      margin: 0;
+      font-size: 1.02rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .close-btn {
+      border: 1px solid #383838;
+      background: #0e0e0e;
+      color: #efefef;
+      border-radius: 999px;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+    }
+
+    .skill-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+      gap: 10px;
+    }
+
+    .skill-item {
+      border: 1px solid #2b2b2b;
+      border-radius: 14px;
+      background: #0f0f0f;
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .skill-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid #3f3f3f;
+      display: grid;
+      place-items: center;
+      font-size: 0.74rem;
+      color: #ffffff;
+      background: radial-gradient(circle at 25% 25%, #282828, #101010);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .skill-label {
+      font-size: 0.78rem;
+      color: #d6d6d6;
+      line-height: 1.3;
+    }
+
+    .game-box {
+      border: 1px solid #2d2d2d;
+      border-radius: 14px;
+      background: #0c0c0c;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .game-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #d6d6d6;
+      font-size: 0.82rem;
+    }
+
+    .game-stage {
+      border: 1px dashed #303030;
+      border-radius: 12px;
+      height: 170px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .game-stage.waiting {
+      background: #231010;
+      border-color: #4a2a2a;
+    }
+
+    .game-stage.ready {
+      background: #102312;
+      border-color: #285a2e;
+    }
+
+    .game-message {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #e2e2e2;
+      letter-spacing: 0.01em;
+      text-align: center;
+      line-height: 1.6;
+      padding: 0 10px;
+    }
+
     @media (max-width: 860px) {
       .layout {
         grid-template-columns: 1fr;
@@ -219,6 +371,18 @@
       .social-wrap {
         min-height: 180px;
       }
+
+      .skills-modal {
+        padding: 14px;
+      }
+
+      .skill-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .game-stage {
+        height: 150px;
+      }
     }
   </style>
 </head>
@@ -229,7 +393,7 @@
       <h1>Luka</h1>
       <p>안녕하세요. 보안과 AI를 결합해 견고하고 지능적인 시스템을 구축하는 데 집중하는 고3 개발자 Luka입니다. 단순히 코드를 따라 치는 것을 넘어, 직접 아키텍처를 설계하고 구현하는 실전 프로젝트를
         통해 저만의 실무 역량을 증명해 나가고 있습니다.</p>
-      <span class="hero-badge" aria-hidden="true">◌</span>
+      <button class="hero-badge" id="skillToggle" type="button" aria-label="기술 목록과 미니게임 열기">◌</button>
     </section>
 
     <section class="right">
@@ -295,6 +459,129 @@
       </article>
     </section>
   </main>
+
+  <div class="skills-overlay" id="skillsOverlay" role="dialog" aria-modal="true" aria-labelledby="skillsTitle">
+    <section class="skills-modal">
+      <div class="skills-top">
+        <h2 id="skillsTitle">Skill Icons</h2>
+        <button class="close-btn" id="closeOverlay" type="button" aria-label="닫기">✕</button>
+      </div>
+
+      <ul class="skill-grid">
+        <li class="skill-item"><span class="skill-icon">Py</span><span class="skill-label">Python</span></li>
+        <li class="skill-item"><span class="skill-icon">Jv</span><span class="skill-label">Java</span></li>
+        <li class="skill-item"><span class="skill-icon">JP</span><span class="skill-label">JSP</span></li>
+        <li class="skill-item"><span class="skill-icon">H5</span><span class="skill-label">HTML</span></li>
+        <li class="skill-item"><span class="skill-icon">C3</span><span class="skill-label">CSS</span></li>
+        <li class="skill-item"><span class="skill-icon">JS</span><span class="skill-label">JavaScript</span></li>
+        <li class="skill-item"><span class="skill-icon">R</span><span class="skill-label">React</span></li>
+        <li class="skill-item"><span class="skill-icon">TS</span><span class="skill-label">TypeScript</span></li>
+        <li class="skill-item"><span class="skill-icon">VC</span><span class="skill-label">Vibe Coding</span></li>
+        <li class="skill-item"><span class="skill-icon">SQL</span><span class="skill-label">SQL (Oracle SQL)</span></li>
+        <li class="skill-item"><span class="skill-icon">ASM</span><span class="skill-label">ASM</span></li>
+      </ul>
+
+      <div class="game-box">
+        <div class="game-head">
+          <strong>Mini Game: Reaction Test</strong>
+          <span>최근 기록: <b id="lastTime">-</b></span>
+          <span>최고 기록: <b id="bestTime">-</b></span>
+          <button class="close-btn" id="startGame" type="button" aria-label="게임 시작">▶</button>
+        </div>
+        <div class="game-stage" id="gameStage">
+          <p class="game-message" id="gameMessage">시작 버튼을 누르고 초록색이 되면 바로 클릭하세요.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const skillToggle = document.getElementById("skillToggle");
+    const skillsOverlay = document.getElementById("skillsOverlay");
+    const closeOverlay = document.getElementById("closeOverlay");
+    const startGame = document.getElementById("startGame");
+    const gameStage = document.getElementById("gameStage");
+    const gameMessage = document.getElementById("gameMessage");
+    const lastTimeEl = document.getElementById("lastTime");
+    const bestTimeEl = document.getElementById("bestTime");
+
+    let bestTime = null;
+    let startAt = 0;
+    let ready = false;
+    let waiting = false;
+    let waitTimeout;
+
+    function openOverlay() {
+      skillsOverlay.classList.add("open");
+    }
+
+    function closeOverlayModal() {
+      skillsOverlay.classList.remove("open");
+      resetRound();
+    }
+
+    function resetRound() {
+      clearTimeout(waitTimeout);
+      ready = false;
+      waiting = false;
+      gameStage.classList.remove("waiting", "ready");
+      gameMessage.textContent = "시작 버튼을 누르고 초록색이 되면 바로 클릭하세요.";
+      startGame.textContent = "▶";
+    }
+
+    function startGameRound() {
+      if (waiting || ready) return;
+      waiting = true;
+      gameStage.classList.add("waiting");
+      gameMessage.textContent = "대기 중... 초록색이 되면 클릭!";
+      startGame.textContent = "■";
+
+      const delay = 1200 + Math.floor(Math.random() * 2600);
+      waitTimeout = setTimeout(() => {
+        waiting = false;
+        ready = true;
+        startAt = performance.now();
+        gameStage.classList.remove("waiting");
+        gameStage.classList.add("ready");
+        gameMessage.textContent = "지금 클릭!";
+      }, delay);
+    }
+
+    function onStageClick() {
+      if (ready) {
+        const reaction = Math.round(performance.now() - startAt);
+        lastTimeEl.textContent = `${reaction}ms`;
+        if (bestTime === null || reaction < bestTime) {
+          bestTime = reaction;
+          bestTimeEl.textContent = `${bestTime}ms`;
+        }
+        ready = false;
+        gameStage.classList.remove("ready");
+        gameMessage.textContent = `기록: ${reaction}ms | 다시 시작해서 갱신해보세요.`;
+        startGame.textContent = "↺";
+        return;
+      }
+
+      if (waiting) {
+        clearTimeout(waitTimeout);
+        waiting = false;
+        gameStage.classList.remove("waiting");
+        gameMessage.textContent = "너무 빨라요. 다시 시작하세요.";
+        startGame.textContent = "↺";
+      }
+    }
+
+    skillToggle.addEventListener("click", openOverlay);
+    closeOverlay.addEventListener("click", closeOverlayModal);
+    gameStage.addEventListener("click", onStageClick);
+    skillsOverlay.addEventListener("click", (event) => {
+      if (event.target === skillsOverlay) closeOverlayModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeOverlayModal();
+    });
+    startGame.addEventListener("click", startGameRound);
+  </script>
 </body>
 
 </html>
