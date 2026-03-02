@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luka Mini Portfolio Game</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-2: #0b0b0b;
+      --panel: rgba(14, 14, 14, 0.9);
+      --line: rgba(255, 255, 255, 0.14);
+      --text: #efefef;
+      --muted: #a8a8a8;
+      --accent: #d0d0d0;
+      --accent-2: #9f9f9f;
+      --good: #ffffff;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.05), transparent 42%),
+        linear-gradient(160deg, var(--bg), var(--bg-2));
+      padding: 20px;
+    }
+
+    .shell {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1.2fr auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 55ch;
+    }
+
+    .home-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .home-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+
+    .game-wrap {
+      position: relative;
+      min-height: 380px;
+      padding: 18px;
+      isolation: isolate;
+    }
+
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .score {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(255, 255, 255, 0.22);
+    }
+
+    .play-area {
+      position: relative;
+      height: 290px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      background: linear-gradient(180deg, rgba(22, 22, 22, 0.9), rgba(10, 10, 10, 0.95));
+      overflow: hidden;
+    }
+
+    #target {
+      position: absolute;
+      width: 84px;
+      height: 84px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.46);
+      box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      color: #f2f2f2;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(20, 20, 20, 0.96);
+      transition: transform 0.1s ease;
+    }
+
+    #target:active {
+      transform: scale(0.88);
+    }
+
+    .effect {
+      position: absolute;
+      font-weight: 700;
+      color: var(--good);
+      animation: floatUp 0.5s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-26px);
+        opacity: 0;
+      }
+    }
+
+    .info {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #d8d8d8;
+      font-size: 0.82rem;
+      background: rgba(24, 24, 24, 0.84);
+    }
+
+    .card {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 14px;
+      background: rgba(16, 16, 16, 0.82);
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .game-wrap {
+        min-height: 350px;
+      }
+
+      .play-area {
+        height: 260px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <section class="panel hero">
+      <div>
+        <h1>Mini Portfolio Playground</h1>
+        <p>클릭 게임으로 기술 스택을 모으는 미니 포트폴리오 페이지입니다. 아이콘을 누를 때마다 점수가 올라가고, 희귀 기술은 보너스 점수를 얻습니다.</p>
+      </div>
+      <a class="home-btn" href="./index.html">메인으로 돌아가기</a>
+    </section>
+
+    <section class="grid">
+      <article class="panel game-wrap">
+        <div class="hud">
+          <div>
+            <div class="label">Stack Master Score</div>
+            <div class="score"><span id="score">0</span></div>
+          </div>
+          <div class="chip-row" aria-label="bonus guide">
+            <span class="chip">기본 +1</span>
+            <span class="chip">희귀 +3</span>
+            <span class="chip">레전드 +5</span>
+          </div>
+        </div>
+
+        <div class="play-area" id="play-area">
+          <button id="target" type="button" aria-label="moving tech target">PY</button>
+        </div>
+      </article>
+
+      <aside class="panel info">
+        <div class="card">
+          <h2>About This Page</h2>
+          <p>기존 게임 화면을 포트폴리오 스타일로 재구성했습니다. 어두운 톤 배경에 블랙 포인트를 넣어 개발자 대시보드 느낌을 강조했습니다.</p>
+        </div>
+        <div class="card">
+          <h2>How To Play</h2>
+          <p>움직이는 타겟을 클릭하세요. 각 기술 스택마다 점수가 다르며, 보너스 스택이 등장하면 높은 점수를 얻습니다.</p>
+        </div>
+        <div class="card">
+          <h2>Tech Stack Set</h2>
+          <p>Python, JavaScript, TypeScript, React, HTML, CSS, SQL, Node.js, Linux, Security</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const scoreElement = document.getElementById("score");
+    const target = document.getElementById("target");
+    const playArea = document.getElementById("play-area");
+
+    let score = 0;
+
+    const stacks = [
+      { icon: "PY", points: 1 },
+      { icon: "JS", points: 1 },
+      { icon: "TS", points: 1 },
+      { icon: "RE", points: 1 },
+      { icon: "HTML", points: 1 },
+      { icon: "CSS", points: 1 },
+      { icon: "SQL", points: 1 },
+      { icon: "NODE", points: 3 },
+      { icon: "LINUX", points: 3 },
+      { icon: "SEC", points: 5 }
+    ];
+
+    function moveTarget() {
+      const item = stacks[Math.floor(Math.random() * stacks.length)];
+      const maxX = playArea.clientWidth - target.clientWidth - 8;
+      const maxY = playArea.clientHeight - target.clientHeight - 8;
+      const x = Math.random() * Math.max(20, maxX);
+      const y = Math.random() * Math.max(20, maxY);
+
+      target.style.left = `${x}px`;
+      target.style.top = `${y}px`;
+      target.textContent = item.icon;
+      target.dataset.points = String(item.points);
+    }
+
+    function createEffect(points, x, y) {
+      const effect = document.createElement("div");
+      effect.className = "effect";
+      effect.textContent = `+${points}`;
+      effect.style.left = `${x}px`;
+      effect.style.top = `${y}px`;
+      playArea.appendChild(effect);
+      setTimeout(() => effect.remove(), 500);
+    }
+
+    target.addEventListener("click", (event) => {
+      const points = Number(target.dataset.points || "1");
+      score += points;
+      scoreElement.textContent = String(score);
+
+      const rect = playArea.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      createEffect(points, x, y);
+
+      moveTarget();
+    });
+
+    window.addEventListener("resize", moveTarget);
+    moveTarget();
+  </script>
+</body>
+
+</html>
