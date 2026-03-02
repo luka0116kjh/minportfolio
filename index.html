@@ -54,6 +54,32 @@
       gap: 16px;
     }
 
+    .lang-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 1px solid #343434;
+      background: rgba(16, 16, 16, 0.95);
+      color: #f0f0f0;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+    }
+
+    .lang-toggle:hover {
+      border-color: #4a4a4a;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .lang-toggle:focus-visible {
+      outline: 2px solid #b3b3b3;
+      outline-offset: 2px;
+    }
+
     .hero h1 {
       margin: 0;
       font-size: clamp(1.8rem, 2.7vw, 2.2rem);
@@ -253,10 +279,11 @@
 <body>
   <main class="layout">
     <section class="panel hero">
+      <button id="langToggle" class="lang-toggle" type="button" aria-label="언어 전환">EN</button>
       <h1>Luka</h1>
-      <p>안녕하세요. 보안과 AI를 결합해 견고하고 지능적인 시스템을 구축하는 데 집중하는 고3 개발자 Luka입니다. 단순히 코드를 따라 치는 것을 넘어, 직접 아키텍처를 설계하고 구현하는 실전 프로젝트를
-        통해 저만의 실무 역량을 증명해 나가고 있습니다.</p>
-      <a class="hero-badge" href="./game.html" aria-label="게임 페이지로 이동">◌</a>
+      <p id="introText">안녕하세요. 보안과 AI를 결합해 견고하고 지능적인 시스템을 구축하는 데 집중하는 고3 개발자 Luka입니다. 저는 단순히 코드를 따라 치는 것을 넘어, 직접 아키텍처를 설계하고 구현하는 실전 프로젝트를
+        통하여 저만의 실무 역량을 증명해 나가고 있습니다.</p>
+      <a id="gameBadge" class="hero-badge" href="./game.html" aria-label="게임 페이지로 이동">◌</a>
     </section>
 
     <section class="right">
@@ -272,17 +299,17 @@
       </article>
 
       <article class="panel mini">
-        <p class="title">Tools</p>
+        <p class="title" id="toolsTitle">Tools</p>
         <ul>
           <li><a href="https://luka0116kjh.github.io/portfolio-react/" target="_blank" rel="noreferrer">Portfolio</a></li>
-          <li><a href="https://luka0116kjh.github.io/ghaslunch1/" target="_blank" rel="noreferrer">오늘의 급식</a></li>
+          <li><a id="mealLink" href="https://luka0116kjh.github.io/ghaslunch1/" target="_blank" rel="noreferrer">오늘의 급식</a></li>
           <li><a href="" target="_blank" rel="noreferrer"></a></li>
           <li><a href="#" target="_blank" rel="noreferrer"></a></li>
         </ul>
       </article>
 
-      <article class="panel photo" aria-label="프로필 이미지 영역">
-        <img src="./image/luka.jpg" alt="Luka 프로필 사진" />
+      <article id="profilePhoto" class="panel photo" aria-label="프로필 이미지 영역">
+        <img id="profileImage" src="./image/luka.jpg" alt="Luka 프로필 사진" />
       </article>
 
       <article class="social-wrap">
@@ -308,8 +335,8 @@
           </a>
         </div>
         <div class="mascot awards-box">
-          <p class="title">Awards</p>
-          <ul class="awards-list">
+          <p id="awardsTitle" class="title">Awards</p>
+          <ul id="awardsList" class="awards-list">
             <li>2024 네이버 청소년 <br> 크리에이터 스쿨 공모전 참가</li>
             <li>2025 현대오토에버 화이트해커 대회 입상</li>
             <li>2025 총장배 로봇 프로그래밍 대회 동상</li>
@@ -322,6 +349,75 @@
       </article>
     </section>
   </main>
+
+  <script>
+    const i18n = {
+      ko: {
+        htmlLang: "ko",
+        toggleLabel: "EN",
+        toggleAria: "언어 전환",
+        intro: "안녕하세요. 보안과 AI를 결합해 견고하고 지능적인 시스템을 구축하는 데 집중하는 고3 개발자 Luka입니다. 저는 단순히 코드를 따라 치는 것을 넘어, 직접 아키텍처를 설계하고 구현하는 실전 프로젝트를 통하여 저만의 실무 역량을 증명해 나가고 있습니다.",
+        gameAria: "게임 페이지로 이동",
+        toolsTitle: "Tools",
+        mealText: "오늘의 급식",
+        profileAreaAria: "프로필 이미지 영역",
+        profileAlt: "Luka 프로필 사진",
+        awardsTitle: "Awards",
+        awards: [
+          "2024 네이버 청소년 <br> 크리에이터 스쿨 공모전 참가",
+          "2025 현대오토에버 화이트해커 대회 입상",
+          "2025 총장배 로봇 프로그래밍 대회 동상",
+          "2025 미래를 그리는 알고리즘 대회 은상",
+          "2026 ghas 급식 날씨 조회 제작",
+          "2026 ZeroScan 웹 진단 도구 제작",
+          "2026 DevDNA GitHub 사용자 1년 데이터 성향 분석"
+        ]
+      },
+      en: {
+        htmlLang: "en",
+        toggleLabel: "KR",
+        toggleAria: "Switch language",
+        intro: "Hi, I am Luka, a high school senior developer focused on building robust and intelligent systems by combining security and AI. Beyond following tutorials, I design and implement architectures in hands-on projects to prove practical engineering skills.",
+        gameAria: "Go to game page",
+        toolsTitle: "Tools",
+        mealText: "School Meals",
+        profileAreaAria: "Profile image section",
+        profileAlt: "Luka profile photo",
+        awardsTitle: "Awards",
+        awards: [
+          "2024 Naver Youth Creator School Contest Participant",
+          "2025 Hyundai AutoEver White Hacker Competition Winner",
+          "2025 President's Cup Robot Programming Competition Bronze Prize",
+          "2025 Future Drawing Algorithm Competition Silver Prize",
+          "2026 Built GHAS school meal and weather lookup",
+          "2026 Built ZeroScan web diagnostic tool",
+          "2026 Built DevDNA: one-year GitHub behavior analysis"
+        ]
+      }
+    };
+
+    let currentLang = "ko";
+
+    function applyLanguage(lang) {
+      const t = i18n[lang];
+      document.documentElement.lang = t.htmlLang;
+      document.getElementById("langToggle").textContent = t.toggleLabel;
+      document.getElementById("langToggle").setAttribute("aria-label", t.toggleAria);
+      document.getElementById("introText").textContent = t.intro;
+      document.getElementById("gameBadge").setAttribute("aria-label", t.gameAria);
+      document.getElementById("toolsTitle").textContent = t.toolsTitle;
+      document.getElementById("mealLink").textContent = t.mealText;
+      document.getElementById("profilePhoto").setAttribute("aria-label", t.profileAreaAria);
+      document.getElementById("profileImage").setAttribute("alt", t.profileAlt);
+      document.getElementById("awardsTitle").textContent = t.awardsTitle;
+      document.getElementById("awardsList").innerHTML = t.awards.map((item) => `<li>${item}</li>`).join("");
+    }
+
+    document.getElementById("langToggle").addEventListener("click", () => {
+      currentLang = currentLang === "ko" ? "en" : "ko";
+      applyLanguage(currentLang);
+    });
+  </script>
 
 </body>
 
