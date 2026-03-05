@@ -1,423 +1,271 @@
 ﻿<!DOCTYPE html>
 <html lang="ko">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luka</title>
-  <style>
-    :root {
-      --bg: #050505;
-      --panel: #0d0d0d;
-      --panel-2: #111111;
-      --line: #222222;
-      --text: #f2f2f2;
-      --muted: #a1a1a1;
-      --radius: 18px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Pretendard", "Noto Sans KR", sans-serif;
-      display: grid;
-      place-items: center;
-      padding: 18px;
-    }
-
-    .layout {
-      width: min(980px, 100%);
-      display: grid;
-      grid-template-columns: 1.05fr 1.1fr;
-      gap: 10px;
-    }
-
-    .panel {
-      background: linear-gradient(180deg, #101010 0%, #0a0a0a 100%);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero {
-      min-height: 500px;
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .lang-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      border: 1px solid #343434;
-      background: rgba(16, 16, 16, 0.95);
-      color: #f0f0f0;
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      transition: border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
-    }
-
-    .lang-toggle:hover {
-      border-color: #4a4a4a;
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-
-    .lang-toggle:focus-visible {
-      outline: 2px solid #b3b3b3;
-      outline-offset: 2px;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(1.8rem, 2.7vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.35;
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.65;
-      max-width: 34ch;
-      font-size: 0.98rem;
-    }
-
-    .hero-badge {
-      position: absolute;
-      left: 24px;
-      bottom: 22px;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid #363636;
-      display: grid;
-      place-items: center;
-      color: #d5d5d5;
-      font-size: 1rem;
-      background: rgba(14, 14, 14, 0.9);
-      cursor: pointer;
-      transition: transform 0.16s ease, border-color 0.16s ease, color 0.16s ease;
-      text-decoration: none;
-    }
-
-    .hero-badge:hover {
-      transform: scale(1.06);
-      border-color: #4a4a4a;
-      color: #ffffff;
-    }
-
-    .hero-badge:focus-visible {
-      outline: 2px solid #b3b3b3;
-      outline-offset: 2px;
-    }
-
-    .right {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .mini {
-      min-height: 255px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .mini .title {
-      color: #d0d0d0;
-      font-size: 0.82rem;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      margin: 0;
-    }
-
-    .mini ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 9px;
-    }
-
-    .mini a {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.95rem;
-      border-bottom: 1px solid #242424;
-      padding-bottom: 6px;
-    }
-
-    .mini a:hover {
-      color: #cfcfcf;
-    }
-
-    .photo {
-      min-height: 220px;
-      position: relative;
-      padding: 0;
-    }
-
-    .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .photo::after {
-      content: "PROFILE";
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    .social-wrap {
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 10px;
-      min-height: 220px;
-    }
-
-    .social {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .social a {
-      height: 66px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: var(--panel-2);
-      color: #efefef;
-      text-decoration: none;
-      display: grid;
-      place-items: center;
-      transition: border-color 0.2s ease, color 0.2s ease;
-    }
-
-    .social a:hover {
-      border-color: #3a3a3a;
-      color: #ffffff;
-    }
-
-    .social svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-
-    .mascot {
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: linear-gradient(170deg, #111111, #080808);
-      display: grid;
-      place-items: center;
-      font-size: 0.95rem;
-      letter-spacing: 0.1em;
-      color: #c9c9c9;
-    }
-
-    @media (max-width: 860px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        min-height: 420px;
-      }
-
-      .mini {
-        min-height: 240px;
-      }
-    }
-
-    @media (max-width: 540px) {
-      body {
-        padding: 14px;
-      }
-
-      .right {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .social-wrap {
-        min-height: 220px;
-      }
-
-      .hero {
-        padding: 22px;
-      }
-
-      .hero p {
-        max-width: 100%;
-        font-size: 0.96rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Luka</title>
+<style>
+:root{
+  --bg:#050505;
+  --panel:#0d0d0d;
+  --panel-2:#111111;
+  --line:#222222;
+  --text:#f2f2f2;
+  --muted:#a1a1a1;
+  --radius:18px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Pretendard","Noto Sans KR",sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:40px 18px;
+}
+.layout{
+  width:min(980px,100%);
+  display:grid;
+  grid-template-columns:1.05fr 1.1fr;
+  gap:10px;
+}
+.panel{
+  background:linear-gradient(180deg,#101010 0%,#0a0a0a 100%);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  position:relative;
+}
+.hero{
+  height:540px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(1.8rem,2.7vw,2.2rem);
+  font-weight:700;
+}
+.hero p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  max-width:34ch;
+}
+.lang-toggle{
+  position:absolute;
+  top:20px;
+  right:20px;
+  border:1px solid #343434;
+  background:rgba(16,16,16,.95);
+  color:#f0f0f0;
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:.75rem;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+.right{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.mini{
+  height:255px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.mini .title{
+  color:#d0d0d0;
+  font-size:.82rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  margin:0;
+}
+.mini ul{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:9px;
+}
+.mini a{
+  color:var(--text);
+  text-decoration:none;
+  border-bottom:1px solid #242424;
+  padding-bottom:6px;
+}
+.photo{
+  height:220px;
+  position:relative;
+}
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.social-wrap{
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:10px;
+  height:220px;
+}
+.social{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.social a{
+  height:66px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:var(--panel-2);
+  display:grid;
+  place-items:center;
+  color:#efefef;
+}
+.social svg{
+  width:22px;
+  height:22px;
+  fill:currentColor;
+}
+.awards-box{
+  overflow-y:auto;
+  padding:12px 16px;
+}
+.awards-list{
+  margin:0;
+  padding-left:18px;
+  font-size:.9rem;
+  line-height:1.5;
+}
+@media(max-width:860px){
+  .layout{grid-template-columns:1fr;}
+  .hero,.mini,.photo,.social-wrap{height:auto;}
+}
+</style>
 </head>
-
 <body>
-  <main class="layout">
-    <section class="panel hero">
-      <button id="langToggle" class="lang-toggle" type="button" aria-label="언어 전환">EN</button>
-      <h1>Luka</h1>
-      <p id="introText">안녕하세요. 보안과 AI를 결합해 더욱 견고하고 지능적인 시스템을 설계하는 데 집중하는 고등학교 3학년 개발자 Luka입니다. 단순히 기능을 구현하는 수준에 머무르지 않고, AI를 활용해 아키텍처를 설계하고 실제 환경에서 발생할 수 있는 한계를 직접 보완하며 완성도를 높이고 있습니다. 이론에 그치지 않고 실전 프로젝트를 통해 설계 능력과 문제 해결 역량을 검증해 나가고 있습니다.</p>
-    </section>
+<main class="layout">
+<section class="panel hero">
+<button id="langToggle" class="lang-toggle" type="button" aria-label="언어 전환">EN</button>
+<h1>Luka</h1>
+<p id="introText">
+안녕하세요. 보안과 AI를 결합해 더욱 견고하고 지능적인 시스템을 설계하는 데 집중하는 고등학교 3학년 개발자 Luka입니다. 단순히 기능을 구현하는 수준에 머무르지 않고, AI를 활용해 아키텍처를 설계하고 실제 환경에서 발생할 수 있는 한계를 직접 보완하며 완성도를 높이고 있습니다. 이론에 그치지 않고 실전 프로젝트를 통해 설계 능력과 문제 해결 역량을 검증해 나가고 있습니다.
+</p>
+</section>
+<section class="right">
+<article class="panel mini">
+<p class="title">Projects</p>
+<ul>
+<li><a href="https://github.com/luka0116kjh/Snake-game" target="_blank">Snake Game</a></li>
+<li><a href="https://github.com/luka0116kjh/DevDNA" target="_blank">DevDNA</a></li>
+<li><a href="https://github.com/luka0116kjh/ZeroScan" target="_blank">ZeroScan</a></li>
+<li><a href="https://github.com/luka0116kjh/ghaslunch1" target="_blank">School Dashboard</a></li>
+</ul>
+</article>
+<article class="panel mini">
+<p class="title">Tools</p>
+<ul>
+<li><a href="https://luka0116kjh.github.io/portfolio-react/" target="_blank">Portfolio</a></li>
+<li><a href="https://ghaslunch1.web.app/" target="_blank">오늘의 급식</a></li>
+</ul>
+</article>
+<article class="panel photo">
+<img src="./image/luka.jpg" loading="lazy">
+</article>
+<article class="panel social-wrap">
+<div class="social">
+<a href="https://github.com/luka0116kjh" target="_blank" aria-label="GitHub">
+<svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.25 1.84 1.25 1.08 1.84 2.83 1.31 3.52 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.21-.13-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.23a11.42 11.42 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.89.12 3.19.77.84 1.24 1.91 1.24 3.21 0 4.58-2.82 5.59-5.5 5.89.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 12 .5z"/></svg>
+</a>
+<a href="mailto:kjh080116@naver.com" aria-label="Email">
+<svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.01L12 13l8-5.99V7H4zm16 10V9.24l-7.4 5.55a1 1 0 0 1-1.2 0L4 9.24V17h16z"/></svg>
+</a>
+<a href="https://typhoon-ursinia-b26.notion.site/luka-blog-2b1a01a0e28580939f1df409b010bf76" target="_blank" aria-label="Notion">
+<svg viewBox="0 0 24 24"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V5A1.5 1.5 0 0 1 5 3.5zm.5 2v13h2.2V10.2l5.1 8.3h2.7v-13h-2.2v8.1l-5-8.1H5.5z"/></svg>
+</a>
+</div>
+<div class="awards-box">
+<p class="title" id="awardsTitle">Awards</p>
+<ul class="awards-list" id="awardsList">
+<li>2024 네이버 청소년 크리에이터 스쿨 공모전 참가</li>
+<li>2025 현대오토에버 화이트해커 대회 입상</li>
+<li>2025 총장배 로봇 프로그래밍 대회 동상</li>
+<li>2025 미래를 그리는 알고리즘 대회 은상</li>
+<li>2026 ghas 급식 날씨 조회 제작</li>
+<li>2026 ZeroScan 웹 진단 도구 제작</li>
+<li>2026 DevDNA GitHub 데이터 분석 도구 제작</li>
+</ul>
+</div>
+</article>
+</section>
+</main>
+<script>
+const i18n = {
+  ko: {
+    htmlLang: "ko",
+    toggleLabel: "EN",
+    toggleAria: "언어 전환",
+    intro: "안녕하세요. 보안과 AI를 결합해 더욱 견고하고 지능적인 시스템을 설계하는 데 집중하는 고등학교 3학년 개발자 Luka입니다. 단순히 기능을 구현하는 수준에 머무르지 않고, AI를 활용해 아키텍처를 설계하고 실제 환경에서 발생할 수 있는 한계를 직접 보완하며 완성도를 높이고 있습니다. 이론에 그치지 않고 실전 프로젝트를 통해 설계 능력과 문제 해결 역량을 검증해 나가고 있습니다.",
+    awardsTitle: "Awards",
+    awards: [
+      "2024 네이버 청소년 크리에이터 스쿨 공모전 참가",
+      "2025 현대오토에버 화이트해커 대회 입상",
+      "2025 총장배 로봇 프로그래밍 대회 동상",
+      "2025 미래를 그리는 알고리즘 대회 은상",
+      "2026 ghas 급식 날씨 조회 제작",
+      "2026 ZeroScan 웹 진단 도구 제작",
+      "2026 DevDNA GitHub 데이터 분석 도구 제작"
+    ]
+  },
+  en: {
+    htmlLang: "en",
+    toggleLabel: "KR",
+    toggleAria: "Switch language",
+    intro: "Hello, I’m Luka, a senior in high school focused on building robust and intelligent systems by integrating security and AI. Rather than simply implementing features, I design architectures powered by AI and actively refine and strengthen their limitations through hands-on development. I continuously validate and sharpen my practical skills by working on real-world projects.",
+    awardsTitle: "Awards",
+    awards: [
+      "2024 Naver Youth Creator School Contest Participant",
+      "2025 Hyundai AutoEver White Hacker Competition Winner",
+      "2025 Robot Programming Competition Bronze Prize",
+      "2025 Future Drawing Algorithm Competition Silver Prize",
+      "2026 Built GHAS school meal and weather lookup",
+      "2026 Built ZeroScan web diagnostic tool",
+      "2026 Built DevDNA GitHub data production tool"
+    ]
+  }
+};
 
-    <section class="right">
-      <article class="panel mini">
-        <p class="title">Projects</p>
-        <ul>
-          <li><a href="https://github.com/luka0116kjh/Snake-game" target="_blank" rel="noreferrer">Snake Game</a></li>
-          <li><a href="https://github.com/luka0116kjh/DevDNA" target="_blank" rel="noreferrer">DevDNA</a></li>
-          <li><a href="https://github.com/luka0116kjh/ZeroScan" target="_blank" rel="noreferrer">ZeroScan</a></li>
-          <li><a href="https://github.com/luka0116kjh/ghaslunch1" target="_blank" rel="noreferrer">School Dashboard</a>
-          </li>
-        </ul>
-      </article>
+let currentLang = "ko";
 
-      <article class="panel mini">
-        <p class="title" id="toolsTitle">Tools</p>
-        <ul>
-          <li><a href="https://luka0116kjh.github.io/portfolio-react/" target="_blank" rel="noreferrer">Portfolio</a>
-          </li>
-          <li><a id="mealLink" href="https://ghaslunch1.web.app/" target="_blank" rel="noreferrer">오늘의 급식</a></li>
-          <li><a href="" target="_blank" rel="noreferrer"></a></li>
-          <li><a href="#" target="_blank" rel="noreferrer"></a></li>
-        </ul>
-      </article>
+function applyLanguage(lang) {
+  const t = i18n[lang];
+  document.documentElement.lang = t.htmlLang;
+  const toggleBtn = document.getElementById("langToggle");
+  toggleBtn.textContent = t.toggleLabel;
+  toggleBtn.setAttribute("aria-label", t.toggleAria);
+  document.getElementById("introText").textContent = t.intro;
+  const awardsTitle = document.getElementById("awardsTitle");
+  if (awardsTitle) awardsTitle.textContent = t.awardsTitle;
+  const awardsList = document.getElementById("awardsList");
+  awardsList.innerHTML = t.awards
+    .map(item => `<li>${item}</li>`)
+    .join("");
+}
 
-      <article id="profilePhoto" class="panel photo" aria-label="프로필 이미지 영역">
-        <img id="profileImage" src="./image/luka.jpg" alt="Luka 프로필 사진" />
-      </article>
+document.getElementById("langToggle").addEventListener("click", () => {
+  currentLang = currentLang === "ko" ? "en" : "ko";
+  applyLanguage(currentLang);
+});
 
-      <article class="social-wrap">
-        <div class="social" aria-label="social links">
-          <a href="https://github.com/luka0116kjh" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.25 1.84 1.25 1.08 1.84 2.83 1.31 3.52 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.21-.13-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.23a11.42 11.42 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.89.12 3.19.77.84 1.24 1.91 1.24 3.21 0 4.58-2.82 5.59-5.5 5.89.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 12 .5z" />
-            </svg>
-          </a>
-          <a href="mailto:kjh080116@naver.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.01L12 13l8-5.99V7H4zm16 10V9.24l-7.4 5.55a1 1 0 0 1-1.2 0L4 9.24V17h16z" />
-            </svg>
-          </a>
-          <a href="https://typhoon-ursinia-b26.notion.site/luka-blog-2b1a01a0e28580939f1df409b010bf76" target="_blank"
-            rel="noreferrer" aria-label="Blog">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V5A1.5 1.5 0 0 1 5 3.5zm.5 2v13h2.2V10.2l5.1 8.3h2.7v-13h-2.2v8.1l-5-8.1H5.5z" />
-            </svg>
-          </a>
-        </div>
-        <div class="mascot awards-box">
-          <p id="awardsTitle" class="title">Awards</p>
-          <ul id="awardsList" class="awards-list">
-            <li>2024 네이버 청소년 <br> 크리에이터 스쿨 공모전 참가</li>
-            <li>2025 현대오토에버 화이트해커 대회 입상</li>
-            <li>2025 총장배 로봇 프로그래밍 대회 동상</li>
-            <li>2025 미래를 그리는 알고리즘 대회 은상</li>
-            <li>2026 ghas 급식 날씨 조회 제작</li>
-            <li>2026 ZeroScan 웹 진단 도구 제작</li>
-            <li>2026 DevDNA GitHub 사용자 1년 데이터 제작</li>
-          </ul>
-        </div>
-      </article>
-    </section>
-  </main>
-
-  <script>
-    const i18n = {
-      ko: {
-        htmlLang: "ko",
-        toggleLabel: "EN",
-        toggleAria: "언어 전환",
-        intro: "안녕하세요. 보안과 AI를 결합해 더욱 견고하고 지능적인 시스템을 설계하는 데 집중하는 고등학교 3학년 개발자 Luka입니다. 단순히 기능을 구현하는 수준에 머무르지 않고, AI를 활용해 아키텍처를 설계하고 실제 환경에서 발생할 수 있는 한계를 직접 보완하며 완성도를 높이고 있습니다. 이론에 그치지 않고 실전 프로젝트를 통해 설계 능력과 문제 해결 역량을 검증해 나가고 있습니다.",
-        gameAria: "게임 페이지로 이동",
-        toolsTitle: "Tools",
-        mealText: "오늘의 급식",
-        profileAreaAria: "프로필 이미지 영역",
-        profileAlt: "Luka 프로필 사진",
-        awardsTitle: "Awards",
-        awards: [
-          "2024 네이버 청소년 <br> 크리에이터 스쿨 공모전 참가",
-          "2025 현대오토에버 화이트해커 대회 입상",
-          "2025 총장배 로봇 프로그래밍 대회 동상",
-          "2025 미래를 그리는 알고리즘 대회 은상",
-          "2026 ghas 급식 날씨 조회 제작",
-          "2026 ZeroScan 웹 진단 도구 제작",
-          "2026 DevDNA GitHub 데이터 분석 도구 제작"
-        ]
-      },
-      en: {
-        htmlLang: "en",
-        toggleLabel: "KR",
-        toggleAria: "Switch language",
-        intro: "Hello, I’m Luka, a senior in high school focused on building robust and intelligent systems by integrating security and AI. Rather than simply implementing features, I design architectures powered by AI and actively refine and strengthen their limitations through hands-on development. I continuously validate and sharpen my practical skills by working on real-world projects.",
-        gameAria: "Go to game page",
-        toolsTitle: "Tools",
-        mealText: "School Meals",
-        profileAreaAria: "Profile image section",
-        profileAlt: "Luka profile photo",
-        awardsTitle: "Awards",
-        awards: [
-          "2024 Naver Youth Creator School Contest Participant",
-          "2025 Hyundai AutoEver White Hacker Competition Winner",
-          "2025 Robot Programming Competition Bronze Prize",
-          "2025 Future Drawing Algorithm Competition Silver Prize",
-          "2026 Built GHAS school meal and weather lookup",
-          "2026 Built ZeroScan web diagnostic tool",
-          "2026 Built DevDNA GitHub data production tool"
-        ]
-      }
-    };
-
-    let currentLang = "ko";
-
-    function applyLanguage(lang) {
-      const t = i18n[lang];
-      document.documentElement.lang = t.htmlLang;
-      document.getElementById("langToggle").textContent = t.toggleLabel;
-      document.getElementById("langToggle").setAttribute("aria-label", t.toggleAria);
-      document.getElementById("introText").textContent = t.intro;
-      document.getElementById("gameBadge").setAttribute("aria-label", t.gameAria);
-      document.getElementById("toolsTitle").textContent = t.toolsTitle;
-      document.getElementById("mealLink").textContent = t.mealText;
-      document.getElementById("profilePhoto").setAttribute("aria-label", t.profileAreaAria);
-      document.getElementById("profileImage").setAttribute("alt", t.profileAlt);
-      document.getElementById("awardsTitle").textContent = t.awardsTitle;
-      document.getElementById("awardsList").innerHTML = t.awards.map((item) => `<li>${item}</li>`).join("");
-    }
-
-    document.getElementById("langToggle").addEventListener("click", () => {
-      currentLang = currentLang === "ko" ? "en" : "ko";
-      applyLanguage(currentLang);
-    });
-  </script>
-
+applyLanguage(currentLang);
+</script>
 </body>
-
 </html>
